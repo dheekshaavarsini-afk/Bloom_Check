@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BloomCheck | Membership Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">B</span><span>Bloom<span class="brand-light">Check</span></span></div>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" data-target="dashboard"><span>▦</span> Overview</button>
+      <button class="nav-item" data-target="checker"><span>⌕</span> Membership check</button>
+      <button class="nav-item" data-target="dataset"><span>＋</span> Manage dataset</button>
+      <button class="nav-item" data-target="explainer"><span>◈</span> How it works</button>
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div>
+        <div><strong>Bloom Filter active</strong><small>Local demo environment</small></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div><div class="eyebrow">DATA STRUCTURES LAB · CASE STUDY</div><h1 id="page-title">Membership intelligence</h1></div>
+        <div class="topbar-right"><span class="live-pill"><i></i> SYSTEM ONLINE</span><div class="avatar">BC</div></div>
+      </header>
+
+      <section class="page-section" id="dashboard">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="hero-tag"><span>✦</span> FAST MEMBERSHIP CHECKING</div>
+            <h2>Search less.<br><em>Know faster.</em></h2>
+            <p>Check whether an element may exist in a huge dataset using a memory-efficient probabilistic data structure.</p>
+            <button class="primary-btn" data-go="checker">Try membership check <span>↗</span></button>
+          </div>
+          <div class="hero-art" aria-label="Bloom filter bit pattern illustration">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="orb-core">B<span>F</span></div>
+            <div class="float-chip chip-one">HASH 01 <b>→ 42</b></div>
+            <div class="float-chip chip-two">BIT ARRAY <b>1 0 1 1</b></div>
+            <div class="float-chip chip-three"><span class="tiny-dot"></span> O(k) lookup</div>
+          </div>
+        </div>
+
+        <div class="section-heading"><div><div class="eyebrow">AT A GLANCE</div><h3>Filter overview</h3></div><span class="subtle">Live backend statistics</span></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Elements processed</span><span class="stat-icon purple">⌘</span></div><div class="stat-value" id="stat-inserted">—</div><div class="stat-foot"><span class="accent-text">↗</span> Inserted into filter</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Membership checks</span><span class="stat-icon blue">⌕</span></div><div class="stat-value" id="stat-checks">—</div><div class="stat-foot">Queries handled this session</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Bit array size</span><span class="stat-icon green">▦</span></div><div class="stat-value"><span id="stat-size">—</span><small> bits</small></div><div class="stat-foot">Compact in-memory structure</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Estimated false-positive rate</span><span class="stat-icon orange">≈</span></div><div class="stat-value"><span id="stat-fpr">—</span><small>%</small></div><div class="stat-foot">Estimate based on inserted count</div></article>
+        </div>
+
+        <div class="lower-grid">
+          <article class="panel quick-panel">
+            <div class="panel-heading"><div><h3>Quick membership check</h3><p>Enter a value to test against the filter.</p></div><span class="panel-symbol">⌕</span></div>
+            <form id="check-form" class="inline-form"><input id="check-input" autocomplete="off" placeholder="e.g. apple, student001..." aria-label="Element to check"><button class="primary-btn" type="submit">Check <span>→</span></button></form>
+            <div id="check-result" class="result-box empty-result"><span class="result-icon">✦</span><div><strong>Ready when you are</strong><p>Your result will appear here.</p></div></div>
+          </article>
+          <article class="panel bit-panel">
+            <div class="panel-heading"><div><h3>Bit array preview</h3><p>First 80 bits of the current filter</p></div><span class="mini-badge">LIVE</span></div>
+            <div id="bit-array" class="bit-grid" aria-label="Bloom Filter bit array"></div>
+            <div class="bit-legend"><span><i class="bit-zero"></i> 0 · Unset</span><span><i class="bit-one"></i> 1 · Set</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="page-section hidden" id="checker">
+        <div class="content-card">
+          <div class="eyebrow">QUERY ENGINE</div><h2>Check membership</h2><p class="page-intro">A Bloom Filter can confirm that an element is absent, or report that it may be present.</p>
+          <form id="check-form-full" class="stack-form"><label for="check-input-full">Element to check</label><div class="input-action"><input id="check-input-full" placeholder="Type an element..." autocomplete="off"><button class="primary-btn">Run check <span>→</span></button></div></form>
+          <div id="check-result-full" class="result-box empty-result"><span class="result-icon">✦</span><div><strong>Waiting for input</strong><p>Enter a value to see the membership result and checked hash positions.</p></div></div>
+          <div class="note-box"><strong>Remember</strong><p>“Probably present” is not proof that an item exists. Bloom Filters can produce false positives.</p></div>
+        </div>
+      </section>
+
+      <section class="page-section hidden" id="dataset">
+        <div class="content-card">
+          <div class="eyebrow">FILTER MANAGEMENT</div><h2>Manage dataset</h2><p class="page-intro">Insert new values into the Bloom Filter or add a batch of newline-separated values.</p>
+          <form id="insert-form" class="stack-form"><label for="insert-input">Add one element</label><div class="input-action"><input id="insert-input" placeholder="e.g. user_1001" autocomplete="off"><button class="primary-btn">Insert element <span>＋</span></button></div></form>
+          <div id="insert-message" class="message-box hidden"></div>
+          <div class="divider"></div>
+          <form id="bulk-form" class="stack-form"><label for="bulk-input">Bulk insert <span class="label-hint">One element per line</span></label><textarea id="bulk-input" rows="6" placeholder="user_1001&#10;user_1002&#10;user_1003"></textarea><button class="primary-btn bulk-btn">Insert all values <span>↗</span></button></form>
+          <div id="bulk-message" class="message-box hidden"></div>
+          <div class="warning-box"><strong>Demo note</strong><p>This starter version stores the filter in backend memory. Restarting the server resets it to the sample data.</p></div>
+          <button id="reset-btn" class="danger-btn">Reset filter</button>
+        </div>
+      </section>
+
+      <section class="page-section hidden" id="explainer">
+        <div class="content-card">
+          <div class="eyebrow">DATA STRUCTURE LAB</div><h2>How BloomCheck works</h2><p class="page-intro">A Bloom Filter uses a bit array and multiple hash functions to test set membership with low memory usage.</p>
+          <div class="steps-grid">
+            <article class="step-card"><span class="step-number">01</span><h3>Start with zeros</h3><p>The bit array is initialized with every bit set to 0.</p></article>
+            <article class="step-card"><span class="step-number">02</span><h3>Hash the element</h3><p>Several hash positions are calculated for each element.</p></article>
+            <article class="step-card"><span class="step-number">03</span><h3>Set bits to one</h3><p>Insertion sets all bits at the calculated positions to 1.</p></article>
+            <article class="step-card"><span class="step-number">04</span><h3>Check the positions</h3><p>If any bit is 0, the item is definitely absent. If all are 1, it may be present.</p></article>
+          </div>
+          <div class="complexity-grid"><div><span>Insertion</span><strong>O(k)</strong><small>k hash positions</small></div><div><span>Membership check</span><strong>O(k)</strong><small>k bit checks</small></div><div><span>Space</span><strong>O(m)</strong><small>m bits in the filter</small></div></div>
+          <div class="note-box"><strong>Implementation detail</strong><p>This project uses a bytearray as the bit vector and SHA-256-based double hashing to generate repeatable positions. With a fixed number of hash functions, insertion and checking are O(1) with respect to the number of stored elements, assuming fixed-size inputs and constant-time hash computations.</p></div>
+        </div>
+      </section>
+      <footer><span>BloomCheck <b>·</b> DSA Case Study</span><span>Built for learning · Bloom Filter</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
